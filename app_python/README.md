@@ -1,5 +1,9 @@
 # Current Moscow Time
 
+[![Python web application][badge]][workflow]
+
+[badge]: https://github.com/SnejUgal/S24-core-course-labs/actions/workflows/python.yaml/badge.svg
+
 A simple web application that shows the current time in Moscow.
 
 ```
@@ -51,3 +55,19 @@ Once you obtain the image, run it using
 ```bash
 docker run --rm -p 8080:8080 snejugal/devops-lab2
 ```
+
+## Testing
+
+To run tests for the application, run
+
+```
+pytest src/test.py
+```
+
+## CI
+
+This reposity has a CI workflow which automatically runs tests for this
+application and updates the app's image on Docker hub. See the [workflow] for
+more.
+
+[workflow]: ../.github/workflows/python.yaml
