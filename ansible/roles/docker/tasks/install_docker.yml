@@ -7,17 +7,21 @@
       - gnupg
     state: present
     update_cache: true
+  tags: docker
 
-- name: Add Docker's GPG key
-  ansible.builtin.apt_key:
-    url: https://download.docker.com/linux/ubuntu/gpg
-    state: present
+- name: Set up Docker repository
+  block:
+    - name: Add Docker's GPG key
+      ansible.builtin.apt_key:
+        url: https://download.docker.com/linux/ubuntu/gpg
+        state: present
 
-- name: Add Docker Repository
-  ansible.builtin.apt_repository:
-    repo: "deb [arch=amd64 signed-by=/etc/apt/trusted.gpg.d/docker.asc] https://download.docker.com/linux/ubuntu {{ ansible_distribution_release }} stable"
-    filename: docker
-    state: present
+    - name: Add Docker repository
+      ansible.builtin.apt_repository:
+        repo: "deb [arch=amd64 signed-by=/etc/apt/trusted.gpg.d/docker.asc] https://download.docker.com/linux/ubuntu {{ ansible_distribution_release }} stable"
+        filename: docker
+        state: present
+  tags: docker
 
 - name: Install Docker
   ansible.builtin.apt:
@@ -26,3 +30,4 @@
       - docker-ce-cli
     state: present
     update_cache: true
+  tags: docker
