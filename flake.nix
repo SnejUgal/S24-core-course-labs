@@ -16,6 +16,18 @@
       in with pkgs; {
         devShells.default = mkShell {
           packages = [
+            python311
+            ruff
+            nodePackages.pyright
+            python311Packages.aiohttp
+            python311Packages.aiohttp-openmetrics
+
+            stack
+            (haskell-language-server.override {
+              supportedGhcVersions = [ "92" ];
+            })
+            zlib
+
             kubernetes
             minikube
             (wrapHelm kubernetes-helm {

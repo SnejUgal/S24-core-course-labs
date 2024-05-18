@@ -26,14 +26,14 @@ serviceAccount:
   name: "internal-app"
 
 podAnnotations:
-  # vault.hashicorp.com/agent-inject: 'true'
-  # vault.hashicorp.com/role: 'internal-app'
-  # vault.hashicorp.com/agent-inject-secret-database-config.txt: 'internal/data/database/config'
-  # vault.hashicorp.com/agent-inject-status: 'update'
-  # vault.hashicorp.com/agent-inject-template-database-config.txt: |
-  #   {{- with secret "internal/data/database/config" -}}
-  #   postgresql://{{ .Data.data.username }}:{{ .Data.data.password }}@postgres:5432/wizard
-  #   {{- end -}}
+  vault.hashicorp.com/agent-inject: 'true'
+  vault.hashicorp.com/role: 'internal-app'
+  vault.hashicorp.com/agent-inject-secret-database-config.txt: 'internal/data/database/config'
+  vault.hashicorp.com/agent-inject-status: 'update'
+  vault.hashicorp.com/agent-inject-template-database-config.txt: |
+    {{- with secret "internal/data/database/config" -}}
+    postgresql://{{ .Data.data.username }}:{{ .Data.data.password }}@postgres:5432/wizard
+    {{- end -}}
 podLabels: {}
 
 podSecurityContext: {}
@@ -92,17 +92,19 @@ autoscaling:
   # targetMemoryUtilizationPercentage: 80
 
 # Additional volumes on the output Deployment definition.
-volumes: []
-# - name: foo
-#   secret:
-#     secretName: mysecret
-#     optional: false
+volumes:
+- name: config-volume
+  configMap:
+    name: config
+    items:
+    - key: config
+      path: config.json
 
 # Additional volumeMounts on the output Deployment definition.
-volumeMounts: []
-# - name: foo
-#   mountPath: "/etc/foo"
-#   readOnly: true
+volumeMounts:
+- name: config-volume
+  mountPath: "/config"
+  readOnly: true
 
 nodeSelector: {}
 
